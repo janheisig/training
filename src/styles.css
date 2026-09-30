@@ -1,0 +1,594 @@
+/* Palette wie gehabt — nur jetzt als echtes Stylesheet statt Inline-Styles,
+   damit Media Queries, Safe-Area-Insets und Fokus-Zustände funktionieren. */
+
+:root {
+  color-scheme: dark;
+  --bg: #10161c;
+  --panel: #1a2229;
+  --panel-2: #0c1116;
+  --line: #2a3540;
+  --snow: #edf2f4;
+  --dim: #8fa1ac;
+  --ice: #8fd6cc;
+  --rope: #ff6a2b;
+  --ok: #7cc98a;
+  --warn: #e8b94a;
+  --bad: #e05656;
+  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
+  --tabbar: 60px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--snow);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overscroll-behavior-y: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 14px;
+  padding-top: env(safe-area-inset-top);
+  /* Platz für die fixierte Tableiste plus Home-Indicator */
+  padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom) + 20px);
+}
+
+/* ─── Kopf ─── */
+.kopf {
+  padding: 14px 0 10px;
+}
+.kopf-zeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.kopf h1 {
+  font-size: 19px;
+  margin: 0;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.kopf .datum {
+  color: var(--dim);
+  font-size: 13px;
+}
+
+.zielbalken {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.chip {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  background: var(--panel);
+  white-space: nowrap;
+}
+.chip b {
+  color: var(--snow);
+  font-weight: 600;
+}
+
+/* ─── Karten ─── */
+.karte {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.karte-kopf {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.karte h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+  font-weight: 650;
+}
+.karte h3 {
+  font-size: 13px;
+  margin: 0 0 6px;
+  font-weight: 600;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.uebung-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+.schema {
+  color: var(--dim);
+  font-size: 12px;
+  font-family: var(--mono);
+  text-align: right;
+  flex-shrink: 0;
+}
+.notiz {
+  color: var(--dim);
+  font-size: 12.5px;
+  margin-top: 5px;
+  line-height: 1.45;
+}
+.hinweis {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--snow);
+}
+.letztes {
+  margin-top: 8px;
+  padding-left: 10px;
+  border-left: 2px solid var(--line);
+  font-size: 12.5px;
+  color: var(--dim);
+}
+.letztes .wert {
+  color: var(--ice);
+}
+.empfehlung {
+  color: var(--rope);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  margin-top: 3px;
+}
+.empfehlung .warum {
+  color: var(--dim);
+  font-family: system-ui, sans-serif;
+}
+
+/* ─── Eingaben ─── */
+.saetze {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+input,
+textarea,
+select {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--snow);
+  font-family: var(--mono);
+  /* 16px verhindert, dass iOS beim Fokus hineinzoomt */
+  font-size: 16px;
+  padding: 11px 10px;
+  width: 100%;
+  min-height: 44px;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--rope);
+  outline-offset: -1px;
+  border-color: var(--rope);
+}
+.satz {
+  flex: 1 1 62px;
+  min-width: 62px;
+  text-align: center;
+}
+textarea {
+  font-family: system-ui, sans-serif;
+  min-height: 74px;
+  resize: vertical;
+  line-height: 1.5;
+}
+label.feld {
+  display: block;
+  color: var(--dim);
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.reihe {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.reihe > * {
+  flex: 1;
+}
+
+/* ─── Knöpfe ─── */
+button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--snow);
+  padding: 11px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px;
+}
+button:active {
+  background: #222d36;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+button.primaer {
+  background: var(--rope);
+  border-color: var(--rope);
+  color: #10161c;
+  font-weight: 650;
+}
+button.haken {
+  flex: 0 0 auto;
+  min-width: 52px;
+  font-size: 17px;
+}
+button.haken[aria-pressed="true"] {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #10161c;
+}
+button.klein {
+  padding: 7px 10px;
+  font-size: 12.5px;
+  min-height: 36px;
+}
+.knopfreihe {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.knopfreihe > button {
+  flex: 1 1 auto;
+}
+
+/* Befinden 1–5 */
+.befinden {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.befinden button {
+  flex: 1;
+  font-family: var(--mono);
+}
+.befinden button[aria-pressed="true"] {
+  background: var(--ice);
+  border-color: var(--ice);
+  color: #10161c;
+  font-weight: 700;
+}
+
+/* ─── Tableiste unten: Daumenreichweite ─── */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background: rgba(16, 22, 28, 0.94);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 40;
+}
+.tabbar button {
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dim);
+  font-size: 11.5px;
+  height: var(--tabbar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 0;
+}
+.tabbar button[aria-selected="true"] {
+  color: var(--rope);
+}
+.tabbar .sym {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ─── Statuszeile ─── */
+.status {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--tabbar) + env(safe-area-inset-bottom) + 12px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  z-index: 50;
+  max-width: calc(100vw - 28px);
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+.status.fehler {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+.status.ok {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+/* ─── Datumsnavigation ─── */
+.datumsnav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.datumsnav button {
+  flex: 0 0 46px;
+  font-size: 18px;
+}
+.datumsnav .mitte {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+.datumsnav .mitte small {
+  display: block;
+  color: var(--dim);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* ─── Balken & Diagramme ─── */
+.balkenreihe {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+  height: 56px;
+  margin: 10px 0 6px;
+}
+.balken {
+  flex: 1;
+  background: var(--panel-2);
+  border-radius: 3px 3px 0 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+.balken i {
+  display: block;
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+}
+.balkenlabel {
+  display: flex;
+  gap: 5px;
+}
+.balkenlabel span {
+  flex: 1;
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--dim);
+  font-family: var(--mono);
+}
+
+.sparkline {
+  width: 100%;
+  height: 52px;
+  display: block;
+}
+
+.zonen {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+.zone {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+}
+.zone .punkt {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.zone .nm {
+  flex: 1;
+}
+.zone .wt {
+  font-family: var(--mono);
+  color: var(--dim);
+}
+
+.kennzahl {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.kennzahl small {
+  font-size: 13px;
+  color: var(--dim);
+  font-weight: 400;
+}
+
+.tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.tabelle td,
+.tabelle th {
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.tabelle th {
+  color: var(--dim);
+  font-weight: 500;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tabelle td.z {
+  font-family: var(--mono);
+  text-align: right;
+}
+
+.woche-tag {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+.woche-tag:last-child {
+  border-bottom: 0;
+}
+.woche-tag .tag {
+  flex: 0 0 34px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--dim);
+}
+.woche-tag .inhalt {
+  flex: 1;
+  min-width: 0;
+}
+.woche-tag .inhalt .t {
+  font-size: 14px;
+}
+.woche-tag .inhalt .u {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+.woche-tag .st {
+  flex: 0 0 auto;
+  font-size: 15px;
+}
+.woche-tag.heute .inhalt .t {
+  color: var(--rope);
+  font-weight: 650;
+}
+
+.mono {
+  font-family: var(--mono);
+}
+.dim {
+  color: var(--dim);
+}
+.ok {
+  color: var(--ok);
+}
+.warn {
+  color: var(--warn);
+}
+.bad {
+  color: var(--bad);
+}
+.ice {
+  color: var(--ice);
+}
+.rope {
+  color: var(--rope);
+}
+.mt {
+  margin-top: 10px;
+}
+.mb {
+  margin-bottom: 10px;
+}
+.klein-text {
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* ─── Timer ─── */
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.timer .uhr {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+  min-width: 72px;
+}
+.timer .uhr.aus {
+  color: var(--rope);
+}
+
+/* ─── Login ─── */
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.login .box {
+  width: 100%;
+  max-width: 340px;
+}
+.login h1 {
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+.login p {
+  color: var(--dim);
+  font-size: 13.5px;
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+
+details.aufklapp summary {
+  cursor: pointer;
+  color: var(--dim);
+  font-size: 13px;
+  padding: 6px 0;
+}
+details.aufklapp[open] summary {
+  color: var(--snow);
+  margin-bottom: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

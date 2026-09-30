@@ -1,0 +1,11 @@
+name = "training"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "dist"
+
+# Die D1-Datenbank. `database_id` musst du einmal eintragen — der Wert kommt aus
+#   npx wrangler d1 create training
+# Siehe README, Abschnitt "Einrichtung".
+[[d1_databases]]
+binding = "DB"
+database_name = "training"
+database_id = "HIER_DEINE_DATABASE_ID_EINTRAGEN"

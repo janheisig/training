@@ -1,0 +1,27 @@
+{
+  "name": "training",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Trainings-Dashboard — 12-Wochen-Bogen bis zum Abflug am 18.12.2026",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test 'test/**/*.test.js'",
+    "icons": "node scripts/icons.mjs",
+    "db:local": "wrangler d1 execute training --local --file=schema.sql",
+    "db:remote": "wrangler d1 execute training --remote --file=schema.sql",
+    "cf:dev": "npm run build && wrangler pages dev dist"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^0.21.1",
+    "wrangler": "^4.144.0"
+  }
+}

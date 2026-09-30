@@ -1,0 +1,10 @@
+# Für die lokale Entwicklung. Kopieren nach .dev.vars (steht in .gitignore).
+# In Produktion werden diese Werte in Cloudflare als Secrets hinterlegt, nicht hier.
+
+SESSION_SECRET=beliebige-lange-zufallszeichenkette-fuer-lokal
+APP_PASSWORD=lokalespasswort
+
+# Optional, nur wenn du Strava lokal testen willst.
+# Die Callback-Domain in den Strava-Einstellungen muss dann localhost sein.
+# STRAVA_CLIENT_ID=
+# STRAVA_CLIENT_SECRET=
