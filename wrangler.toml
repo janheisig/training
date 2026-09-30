@@ -2,10 +2,17 @@ name = "training"
 compatibility_date = "2026-09-01"
 pages_build_output_dir = "dist"
 
-# Die D1-Datenbank. `database_id` musst du einmal eintragen — der Wert kommt aus
-#   npx wrangler d1 create training
-# Siehe README, Abschnitt "Einrichtung".
+# Der Projektname oben muss mit dem Project name in Cloudflare Pages übereinstimmen,
+# sonst bricht der Build ab.
+
+# Die D1-Datenbank.
+#
+# `database_id` musst du EINMAL selbst eintragen. Die ID steht im Cloudflare-Dashboard
+# auf der Übersichtsseite deiner Datenbank: Storage & Databases → D1 → training.
+# Klick-Anleitung: SETUP.md, Schritt 1 und Schritt 3.
+#
+# Solange hier die Nullen stehen, meldet /api/health  "db": "fehlt".
 [[d1_databases]]
 binding = "DB"
 database_name = "training"
-database_id = "HIER_DEINE_DATABASE_ID_EINTRAGEN"
+database_id = "00000000-0000-0000-0000-000000000000"

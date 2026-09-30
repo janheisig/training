@@ -23,79 +23,23 @@ funktioniert dort auch ohne Empfang.
 
 ## Einrichtung
 
-Einmalig, etwa 20 Minuten. Du brauchst ein Cloudflare-Konto (kostenlos) und ein Strava-Konto.
+Einmalig, etwa 25 Minuten, komplett im Browser — **ohne Terminal**.
 
-### 1. Repository mit Cloudflare Pages verbinden
+**→ [SETUP.md](SETUP.md)** führt dich Schritt für Schritt durch:
+Datenbank anlegen, Datenbank-ID eintragen, App bei Cloudflare anlegen, Geheimnisse
+hinterlegen, Strava verbinden, aufs iPhone legen. Mit Prüfpunkt nach jedem Abschnitt
+und einer Tabelle für den Fall, dass etwas klemmt.
 
-1. In Cloudflare: **Workers & Pages → Create → Pages → Connect to Git**
-2. Repository `janheisig/training` auswählen
-3. Build-Einstellungen:
-   - **Framework preset:** `None`
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-4. **Save and Deploy**
+Kurzfassung für alle, die es eilig haben:
 
-Der erste Build schlägt noch nicht fehl, aber die App meldet sich mit „Server nicht fertig
-eingerichtet“ — das ist richtig so, die Geheimnisse fehlen noch.
-
-### 2. Datenbank anlegen
-
-Lokal im Repo, einmalig:
-
-```bash
-npm install
-npx wrangler login
-npx wrangler d1 create training
-```
-
-Der Befehl gibt eine `database_id` aus. Die trägst du in `wrangler.toml` ein, an die Stelle von
-`00000000-0000-0000-0000-000000000000`. Dann das Schema einspielen:
-
-```bash
-npx wrangler d1 execute training --remote --file=schema.sql
-```
-
-Danach in Cloudflare die Datenbank an das Projekt binden:
-**Workers & Pages → training → Settings → Bindings → Add → D1 database**
-- Variable name: `DB`
-- D1 database: `training`
-
-### 3. Geheimnisse setzen
-
-**Workers & Pages → training → Settings → Variables and Secrets**, jeweils als **Secret**
-(nicht als Plaintext), für **Production**:
-
-| Name | Wert |
-|---|---|
-| `APP_PASSWORD` | Dein Passwort für die App. Frei wählbar, aber lang. |
-| `SESSION_SECRET` | Eine lange Zufallszeichenkette. Erzeugen mit dem Befehl unten. |
-
-```bash
-openssl rand -base64 32
-```
-
-`SESSION_SECRET` signiert deine Anmeldung. Wenn du es später änderst, musst du dich einmal neu
-anmelden — sonst passiert nichts.
-
-### 4. Strava verbinden
-
-1. Auf [strava.com/settings/api](https://www.strava.com/settings/api) eine Anwendung anlegen:
-   - **Application Name:** `Training Dashboard`
-   - **Category:** `Training`
-   - **Website:** die Adresse deiner Pages-App
-   - **Authorization Callback Domain:** nur die Domain, ohne `https://` und ohne Pfad —
-     also z. B. `training-abc.pages.dev`
-2. Strava zeigt dir **Client ID** und **Client Secret**.
-3. Beides in Cloudflare als Secret hinterlegen: `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET`
-4. Deployment neu anstoßen (**Deployments → Retry deployment**), damit die Secrets greifen.
-5. In der App: **Mehr → Mit Strava verbinden**. Dabei muss **„Alle Aktivitäten ansehen“**
-   angehakt sein, sonst kann das Dashboard deine Fahrten nicht lesen.
-
-### 5. Auf dem iPhone einrichten
-
-In **Safari** die Adresse öffnen (nicht Chrome — nur Safari kann Web-Apps installieren),
-dann **Teilen → Zum Home-Bildschirm**. Danach startet die App ohne Adressleiste und lädt
-auch ohne Empfang.
+1. Cloudflare → **D1** → Datenbank `training` anlegen, ID notieren, Schema in der Console einspielen
+2. ID in `wrangler.toml` eintragen (geht direkt auf github.com)
+3. Cloudflare → **Pages** → **Connect to Git** → Repo `training`, Build `npm run build`, Output `dist`
+4. Secrets `APP_PASSWORD` und `SESSION_SECRET` setzen, dann **Retry deployment**
+5. Strava-App unter [strava.com/settings/api](https://www.strava.com/settings/api) anlegen —
+   als Callback Domain **nur die Domain**, ohne `https://` und ohne Pfad. `STRAVA_CLIENT_ID`
+   und `STRAVA_CLIENT_SECRET` als Secrets setzen, wieder neu deployen.
+6. In Safari öffnen → **Teilen → Zum Home-Bildschirm**
 
 ### Prüfen, ob alles sitzt
 
@@ -104,7 +48,7 @@ https://DEINE-ADRESSE/api/health
 ```
 
 Gibt zurück, was konfiguriert ist und ob die Datenbank erreichbar ist. Der einzige Endpunkt,
-der ohne Anmeldung antwortet.
+der ohne Anmeldung antwortet — und der schnellste Weg zu sehen, woran es hakt.
 
 ---
 
