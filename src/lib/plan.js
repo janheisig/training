@@ -229,7 +229,7 @@ export function getSession(dateStr, dowIdx) {
   ex.A[5] = [
     KZ("4x4-6", "RPE 8, sauber ohne Kip. Pro Satz Wiederholungen, Zusatzgewicht (0 = Körpergewicht) und Haken, wenn du das grüne Band benutzt hast. Ziel: ohne Band 4x8, danach Zusatzgewicht."),
     S("Langhantel-Rudern", "4x6", "kg", 5, 40, "RPE 7–8. Oberkörper ruhig, kein Schwung."),
-    S("Schulterdrücken", "3x6-8", "kg/KH", 2, 15),
+    S("Military Press", "3x6-8", "kg", 2.5, 40, "Stehend, Langhantel. Gesäß und Bauch fest, Rippen unten, kein Hohlkreuz. Gewicht = Stange plus Scheiben."),
     S("Face Pulls", "3x15", "kg", 0, 16.25, "Prehab Schulter. Gewicht bewusst konstant halten."),
     S("Rudergerät", "5x500 m", "Split", 0, null, "RPE 7, Pause = Ruderzeit. Pro Intervall die Zeit in Sekunden eintragen."),
     S("Exz. Handgelenke", "3x15", "✓", 0, null, "Strecker und Beuger, langsam exzentrisch. Prophylaxe gegen Kletterellbogen."),
@@ -238,7 +238,7 @@ export function getSession(dateStr, dowIdx) {
   ex.B[5] = [
     KZ("4x AMRAP", "Nicht bis zum Versagen — zwei Wiederholungen vor Schluss abbrechen. Pro Satz Wiederholungen, Zusatzgewicht und Haken fürs grüne Band."),
     S("Langhantel-Rudern", "4x12", "kg", 2.5, 40),
-    S("Schulterdrücken", "3x12-15", "kg/KH", 2, 15),
+    S("Military Press", "3x12-15", "kg", 2.5, 30, "Stehend, Langhantel. Leichter als im Kraftblock, Wiederholungen sauber."),
     S("Face Pulls", "3x15", "kg", 0, 16.25, "Prehab Schulter. Gewicht konstant halten."),
     weekInBlock % 2 === 1
       ? S("Rudergerät", "Pyramide 250-500-750-500-250 m", "Split", 0, null, "RPE 6–7, Pause etwa so lang wie das Intervall. Zeit pro Intervall eintragen.")
@@ -294,6 +294,7 @@ export const EX_INDEX = (() => {
     ["Wadenheben einbeinig", "✓"],
     ["Hanging Leg Raises", "✓"],
     ["Step-up Box", "kg/KH"],
+    ["Schulterdrücken", "kg/KH"],
   ];
   for (const [name, unit] of legacy) {
     const id = slug(name);
