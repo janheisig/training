@@ -233,7 +233,7 @@ export function getSession(dateStr, dowIdx) {
     S("Face Pulls", "3x15", "kg", 0, 16.25, "Prehab Schulter. Gewicht bewusst konstant halten."),
     S("Rudergerät", "5x500 m", "Split", 0, null, "RPE 7, Pause = Ruderzeit. Pro Intervall die Zeit in Sekunden eintragen."),
     S("Exz. Handgelenke", "3x15", "✓", 0, null, "Strecker und Beuger, langsam exzentrisch. Prophylaxe gegen Kletterellbogen."),
-    S("Y-T-W-Raises", "3x10", "✓", 0),
+    S("Y-T-W-Raises", "3x10", "kg", 0.5, 2, "Leichte Kurzhanteln, pro Hand. Bäuchlings auf der Schrägbank, Daumen nach oben, ohne Schwung. Nur steigern, wenn alle Sätze ohne Nackenspannung laufen."),
   ];
   ex.B[5] = [
     KZ("4x AMRAP", "Nicht bis zum Versagen — zwei Wiederholungen vor Schluss abbrechen. Pro Satz Wiederholungen, Zusatzgewicht und Haken fürs grüne Band."),
@@ -244,7 +244,7 @@ export function getSession(dateStr, dowIdx) {
       ? S("Rudergerät", "Pyramide 250-500-750-500-250 m", "Split", 0, null, "RPE 6–7, Pause etwa so lang wie das Intervall. Zeit pro Intervall eintragen.")
       : S("Rudergerät", "4x750 m", "Split", 0, null, "RPE 5–6, Pause halbe Intervallzeit. Zeit pro Intervall eintragen."),
     S("Exz. Handgelenke", "3x15", "✓", 0, null, "Strecker und Beuger, langsam exzentrisch."),
-    S("Y-T-W-Raises", "3x10", "✓", 0),
+    S("Y-T-W-Raises", "3x10", "kg", 0.5, 2, "Leichte Kurzhanteln, pro Hand. Bäuchlings auf der Schrägbank, Daumen nach oben, ohne Schwung. Nur steigern, wenn alle Sätze ohne Nackenspannung laufen."),
   ];
 
   // ── Sonntag: Motor — Steigung & Tragen (Zeitdeckel 75 Min) ──
