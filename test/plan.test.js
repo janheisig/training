@@ -268,3 +268,9 @@ describe("Hilfsfunktionen", () => {
     }
   });
 });
+
+import { hatSpanne } from "../src/lib/plan.js";
+test("hatSpanne erkennt Wiederholungsspannen im Schema", () => {
+  for (const s of ["3x6-8", "4x4-6", "3x12-15", "3x8-10"]) assert.equal(hatSpanne(s), true, s);
+  for (const s of ["4x5", "3x15", "4x AMRAP", "45-60 Min", "3x12/Bein", "2 Min/Seite"]) assert.equal(hatSpanne(s), false, s);
+});

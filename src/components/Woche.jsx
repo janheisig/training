@@ -21,7 +21,8 @@ export default function Woche({ data, schreibe, dateStr, setDateStr, todayStr })
       const sets = (e.sets || []).filter((x) => x);
       if (!sets.length) continue;
       const alleGleich = sets.every((s) => s === sets[0]);
-      teile.push(`${meta.name} ${alleGleich && sets.length > 1 ? `${sets.length}×${sets[0]}` : sets.join("/")}`);
+      const rp = (e.reps || []).filter((x) => x);
+      teile.push(`${meta.name} ${alleGleich && sets.length > 1 ? `${sets.length}×${sets[0]}` : sets.join("/")}${rp.length ? ` × ${rp.join("/")}` : ""}`);
     }
     const acts = (l.cardio || {}).aktivitaeten || [];
     for (const a of acts)

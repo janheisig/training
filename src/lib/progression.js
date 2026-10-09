@@ -71,3 +71,9 @@ export function empfehlung(ex, last, bi) {
 
   return { sugg, why, lastLabel };
 }
+
+/** Tatsächlich gemachte Wiederholungen als Text, z. B. "8/7/6". Leer, wenn nichts eingetragen. */
+export function repsText(e) {
+  const r = ((e && e.reps) || []).filter((x) => x !== "" && x != null);
+  return r.length ? r.join("/") : "";
+}

@@ -274,6 +274,9 @@ export function getSession(dateStr, dowIdx) {
   return { title: titles[dowIdx], type: "gym", hint, exercises: list };
 }
 
+/** Schema mit Wiederholungsspanne wie "3x6-8" oder "4x4-6": hier trägst du zusätzlich die tatsächlichen Wiederholungen ein. */
+export const hatSpanne = (scheme) => /^\d+\s*x\s*\d+\s*-\s*\d+/i.test(scheme || "");
+
 /** Anzahl Sätze aus einem Schema wie "4x5" oder "3x12-15". Maximal 8. */
 export const setCount = (scheme) => {
   const m = /^(\d+)\s*x/i.exec(scheme || "");

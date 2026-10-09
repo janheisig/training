@@ -105,7 +105,8 @@ export function exportText(data, todayStr) {
           teile.push(`${meta.name} ${kz.join("/")} Reps${e.done ? "" : " (offen)"}`);
           continue;
         }
-        teile.push(`${meta.name} ${sets.length ? sets.join("/") : "✓"}${meta.unit && sets.length ? " " + meta.unit : ""}${e.done ? "" : " (offen)"}`);
+        const rp = (e.reps || []).filter((x) => x);
+        teile.push(`${meta.name} ${sets.length ? sets.join("/") : "✓"}${meta.unit && sets.length ? " " + meta.unit : ""}${rp.length ? ` × ${rp.join("/")} Reps` : ""}${e.done ? "" : " (offen)"}`);
       }
       const c = l.cardio || {};
       if ((c.aktivitaeten || []).length)

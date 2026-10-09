@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { kurz, plusTage, heute as heuteFn, num, fmtNum, fmtKg, DAYS } from "../lib/dates.js";
-import { setCount, GEWICHT, KREATIN, inReise } from "../lib/plan.js";
-import { lastFor, empfehlung } from "../lib/progression.js";
+import { setCount, hatSpanne, GEWICHT, KREATIN, inReise } from "../lib/plan.js";
+import { lastFor, empfehlung, repsText } from "../lib/progression.js";
 import { gewichtStatus, zoneVon } from "../lib/metrics.js";
 import { Karte, Timer, timerSekunden } from "./ui.jsx";
 
@@ -55,6 +55,10 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
   const last = lastFor(logs, ex.id, dateStr);
   const { sugg, why, lastLabel } = empfehlung(ex, last, bi);
   const tSek = timerSekunden(ex.scheme);
+  // Bei Spannen wie "3x6-8": zusätzlich echte Wiederholungen pro Satz. Bei Einheit ✓ ist das Satzfeld selbst die Wiederholung.
+  const spanne = hatSpanne(ex.scheme) && !ex.zusatz;
+  const repsZeile = spanne && ex.unit !== "✓";
+  const lastReps = last ? repsText((logs[last.date].entries || {})[ex.id]) : "";
 
   const setzeSatz = (i, v) => {
     aendereLog(dateStr, (l) => {
@@ -109,6 +113,7 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
         <div className="letztes">
           <div>
             {kurz(last.date)}: <span className="wert">{ex.zusatz ? zusatzLabel(logs[last.date].entries[ex.id]) : lastLabel}</span>
+            {lastReps && !ex.zusatz && <span className="dim"> · Reps {lastReps}</span>}
             {!last.done && <span className="dim"> (nicht abgehakt)</span>}
           </div>
           {sugg !== null && (
@@ -171,7 +176,7 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
             enterKeyHint="next"
             value={sets[i] || ""}
             onChange={(ev) => setzeSatz(i, ev.target.value)}
-            placeholder={ex.unit === "✓" ? "✓" : ex.unit}
+            placeholder={spanne && ex.unit === "✓" ? "Reps" : ex.unit === "✓" ? "✓" : ex.unit}
             aria-label={`${ex.name}, Satz ${i + 1}`}
           />
         ))}
@@ -179,6 +184,25 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
           {e.done ? "✓" : "○"}
         </button>
       </div>
+      )}
+
+      {repsZeile && (
+        <>
+          <div className="klein-text dim" style={{ marginTop: 8 }}>Tatsächliche Wiederholungen ({ex.scheme.replace(/^\d+\s*x\s*/i, "")})</div>
+          <div className="saetze" style={{ marginTop: 4 }}>
+            {Array.from({ length: n }).map((_, i) => (
+              <input
+                key={i}
+                className="satz"
+                inputMode="numeric"
+                value={(e.reps || [])[i] || ""}
+                onChange={(ev) => setzeFeld("reps", i, ev.target.value)}
+                placeholder="Reps"
+                aria-label={`${ex.name}, Satz ${i + 1}, Wiederholungen`}
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {sugg !== null && n > 1 && (
