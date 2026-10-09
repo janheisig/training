@@ -100,6 +100,11 @@ export function exportText(data, todayStr) {
         const meta = EX_INDEX[exId] || { name: exId, unit: "" };
         const sets = (e.sets || []).filter((x) => x);
         if (!sets.length && !e.done) continue;
+        const kz = (e.sets || []).map((r, i) => (r ? `${r}${(e.kg || [])[i] ? "+" + e.kg[i] + "kg" : ""}${(e.band || [])[i] ? "(Band)" : ""}` : null)).filter(Boolean);
+        if (exId === "klimmzge" && kz.length) {
+          teile.push(`${meta.name} ${kz.join("/")} Reps${e.done ? "" : " (offen)"}`);
+          continue;
+        }
         teile.push(`${meta.name} ${sets.length ? sets.join("/") : "✓"}${meta.unit && sets.length ? " " + meta.unit : ""}${e.done ? "" : " (offen)"}`);
       }
       const c = l.cardio || {};

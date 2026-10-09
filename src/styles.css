@@ -592,3 +592,10 @@ details.aufklapp[open] summary {
     animation: none !important;
   }
 }
+
+.kz { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+.kz-zeile { display: flex; align-items: center; gap: 7px; }
+.kz-nr { flex: 0 0 18px; color: var(--dim, #8a93a0); font-size: 13px; text-align: center; }
+.kz-zeile .satz { flex: 1 1 0; min-width: 0; }
+.kz .band { flex: 0 0 76px; min-height: 44px; }
+.kz .haken { align-self: flex-end; }

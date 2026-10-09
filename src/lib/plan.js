@@ -129,6 +129,9 @@ const S = (name, scheme, unit, inc, start, note) => ({
   note: note || "",
 });
 
+/** Klimmzüge: pro Satz Wiederholungen + Zusatzgewicht (kg) + Haken fürs grüne Band. */
+const KZ = (scheme, note) => ({ ...S("Klimmzüge", scheme, "Reps", 0, null, note), zusatz: true });
+
 /**
  * Die Einheit für einen Tag. `dowIdx`: 0 = Sonntag … 6 = Samstag.
  */
@@ -224,7 +227,7 @@ export function getSession(dateStr, dowIdx) {
 
   // ── Freitag: Oberkörper + Rudergerät ──
   ex.A[5] = [
-    S("Klimmzüge", "4x4-6", "kg", 2.5, 0, "RPE 8, sauber ohne Kip. Sobald 4x8 am Körpergewicht stehen: Zusatzgewicht, dann +2,5 kg."),
+    KZ("4x4-6", "RPE 8, sauber ohne Kip. Pro Satz Wiederholungen, Zusatzgewicht (0 = Körpergewicht) und Haken, wenn du das grüne Band benutzt hast. Ziel: ohne Band 4x8, danach Zusatzgewicht."),
     S("Langhantel-Rudern", "4x6", "kg", 5, 40, "RPE 7–8. Oberkörper ruhig, kein Schwung."),
     S("Schulterdrücken", "3x6-8", "kg/KH", 2, 15),
     S("Face Pulls", "3x15", "kg", 0, 16.25, "Prehab Schulter. Gewicht bewusst konstant halten."),
@@ -233,7 +236,7 @@ export function getSession(dateStr, dowIdx) {
     S("Y-T-W-Raises", "3x10", "✓", 0),
   ];
   ex.B[5] = [
-    S("Klimmzüge", "4x AMRAP", "Reps", 0, 0, "Nicht bis zum Versagen — zwei Wiederholungen vor Schluss abbrechen."),
+    KZ("4x AMRAP", "Nicht bis zum Versagen — zwei Wiederholungen vor Schluss abbrechen. Pro Satz Wiederholungen, Zusatzgewicht und Haken fürs grüne Band."),
     S("Langhantel-Rudern", "4x12", "kg", 2.5, 40),
     S("Schulterdrücken", "3x12-15", "kg/KH", 2, 15),
     S("Face Pulls", "3x15", "kg", 0, 16.25, "Prehab Schulter. Gewicht konstant halten."),

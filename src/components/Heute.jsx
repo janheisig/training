@@ -36,6 +36,18 @@ function CardioInfo({ c, ftp }) {
   );
 }
 
+function zusatzLabel(e) {
+  const reps = e.sets || [];
+  return reps
+    .map((r, i) => {
+      if (!r) return null;
+      const kg = (e.kg || [])[i];
+      return `${r}${kg && num(kg) ? ` +${kg} kg` : ""}${(e.band || [])[i] ? " (Band)" : ""}`;
+    })
+    .filter(Boolean)
+    .join(" / ");
+}
+
 function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
   const e = log.entries[ex.id] || {};
   const n = setCount(ex.scheme);
@@ -51,6 +63,18 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
       while (arr.length < n) arr.push("");
       arr[i] = v;
       l.entries[ex.id] = { ...alt, sets: arr };
+      return l;
+    });
+  };
+
+  // Klimmzüge: pro Satz Reps (sets), Zusatzkilo (kg) und Band (band).
+  const setzeFeld = (feld, i, v) => {
+    aendereLog(dateStr, (l) => {
+      const alt = l.entries[ex.id] || {};
+      const arr = [...(alt[feld] || [])];
+      while (arr.length < n) arr.push(feld === "band" ? false : "");
+      arr[i] = v;
+      l.entries[ex.id] = { ...alt, [feld]: arr };
       return l;
     });
   };
@@ -84,7 +108,7 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
       {last && (
         <div className="letztes">
           <div>
-            {kurz(last.date)}: <span className="wert">{lastLabel}</span>
+            {kurz(last.date)}: <span className="wert">{ex.zusatz ? zusatzLabel(logs[last.date].entries[ex.id]) : lastLabel}</span>
             {!last.done && <span className="dim"> (nicht abgehakt)</span>}
           </div>
           {sugg !== null && (
@@ -100,6 +124,44 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
         </div>
       )}
 
+      {ex.zusatz && (
+        <div className="kz">
+          {Array.from({ length: n }).map((_, i) => (
+            <div className="kz-zeile" key={i}>
+              <span className="kz-nr">{i + 1}</span>
+              <input
+                className="satz"
+                inputMode="numeric"
+                value={sets[i] || ""}
+                onChange={(ev) => setzeSatz(i, ev.target.value)}
+                placeholder="Reps"
+                aria-label={`${ex.name}, Satz ${i + 1}, Wiederholungen`}
+              />
+              <input
+                className="satz"
+                inputMode="decimal"
+                value={(e.kg || [])[i] || ""}
+                onChange={(ev) => setzeFeld("kg", i, ev.target.value)}
+                placeholder="+kg"
+                aria-label={`${ex.name}, Satz ${i + 1}, Zusatzgewicht in Kilogramm`}
+              />
+              <button
+                className="band"
+                aria-pressed={!!(e.band || [])[i]}
+                onClick={() => setzeFeld("band", i, !(e.band || [])[i])}
+                aria-label={`${ex.name}, Satz ${i + 1}, grünes Band`}
+              >
+                {(e.band || [])[i] ? "✓ Band" : "Band"}
+              </button>
+            </div>
+          ))}
+          <button className="haken" aria-pressed={!!e.done} onClick={toggleDone} title="Übung abgeschlossen">
+            {e.done ? "✓" : "○"}
+          </button>
+        </div>
+      )}
+
+      {!ex.zusatz && (
       <div className="saetze">
         {Array.from({ length: n }).map((_, i) => (
           <input
@@ -117,6 +179,7 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
           {e.done ? "✓" : "○"}
         </button>
       </div>
+      )}
 
       {sugg !== null && n > 1 && (
         <button className="klein mt" onClick={alleFuellen}>
