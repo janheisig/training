@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { kurz, plusTage, heute as heuteFn, num, fmtNum, fmtKg, DAYS } from "../lib/dates.js";
-import { setCount, hatSpanne, GEWICHT, KREATIN, inReise } from "../lib/plan.js";
+import { kurz, plusTage, heute as heuteFn, num, fmtNum, fmtKg, dow, DAYS } from "../lib/dates.js";
+import { setCount, hatSpanne, getHeimSession, sessionFuer, HEIM_KB, GEWICHT, KREATIN, inReise } from "../lib/plan.js";
 import { lastFor, empfehlung, repsText } from "../lib/progression.js";
 import { gewichtStatus, zoneVon } from "../lib/metrics.js";
 import { Karte, Timer, timerSekunden } from "./ui.jsx";
@@ -216,8 +216,12 @@ function Uebung({ ex, log, bi, logs, dateStr, aendereLog }) {
   );
 }
 
-export default function Heute({ data, aendereLog, schreibe, dateStr, setDateStr, todayStr, bi, session, strava, stravaHolen, busy }) {
+export default function Heute({ data, aendereLog, schreibe, dateStr, setDateStr, todayStr, bi, session: planSession, strava, stravaHolen, busy }) {
   const rawLog = data.logs[dateStr] || {};
+  // Gym-Plan oder Zuhause-Variante mit dem Kettlebell, je nachdem, was für diesen Tag gewählt ist.
+  const heimMoeglich = !inReise(dateStr) && !!getHeimSession(dow(dateStr));
+  const session = sessionFuer(dateStr, dow(dateStr), rawLog);
+  const setzeModus = (m) => aendereLog(dateStr, (l) => ((l.modus = m), l));
   const log = {
     entries: rawLog.entries || {},
     cardio: rawLog.cardio || {},
@@ -271,6 +275,16 @@ export default function Heute({ data, aendereLog, schreibe, dateStr, setDateStr,
         <div className="karte-kopf">
           <h2 style={{ margin: 0 }}>{session.title}</h2>
         </div>
+        {heimMoeglich && (
+          <div className="knopfreihe mt" role="group" aria-label="Wo trainierst du heute?">
+            <button aria-pressed={!session.heim} className={!session.heim ? "primaer" : ""} onClick={() => setzeModus(null)}>
+              Gym
+            </button>
+            <button aria-pressed={!!session.heim} className={session.heim ? "primaer" : ""} onClick={() => setzeModus("heim")}>
+              Zuhause · Kettlebell {HEIM_KB} kg
+            </button>
+          </div>
+        )}
         {session.hint && <div className="hinweis mt">{session.hint}</div>}
         {bi.blockFokus && bi.imPlan && (
           <details className="aufklapp mt">

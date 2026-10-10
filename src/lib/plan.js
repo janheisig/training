@@ -277,6 +277,70 @@ export function getSession(dateStr, dowIdx) {
 /** Schema mit Wiederholungsspanne wie "3x6-8" oder "4x4-6": hier trägst du zusätzlich die tatsächlichen Wiederholungen ein. */
 export const hatSpanne = (scheme) => /^\d+\s*x\s*\d+\s*-\s*\d+/i.test(scheme || "");
 
+// ── Zuhause-Variante: 15–20 Minuten mit einem Kettlebell (16 kg) ──
+// Für Tage, an denen das Gym nicht klappt. Gleiche Logik wie im Gym, eigene Übungs-IDs ("kb-…"),
+// damit sich die Historie nicht mit den Gym-Werten vermischt. Kein Laufen, keine Zusatzlast nötig.
+export const HEIM_KB = 16;
+
+const HZ = (name, scheme, unit, note) => ({ ...S(name, scheme, unit, 0, null, note), id: "kb-" + slug(name) });
+
+/**
+ * Zuhause-Variante für einen Wochentag (0 = Sonntag … 6 = Samstag) oder `null`,
+ * wenn es dafür keine gibt (Rad-Tage, Klettern am Donnerstag, Samstag).
+ */
+export function getHeimSession(dowIdx) {
+  const kopf = `${HEIM_KB}-kg-Kettlebell · rund 18 Min. Jeder Satz ist eine Runde: trag je Runde die Wiederholungen ein.`;
+  if (dowIdx === 1)
+    return {
+      title: "Zuhause · Beine + Core",
+      type: "gym",
+      heim: true,
+      hint: `${kopf} 4 Runden, 30 Sek Pause zwischen den Runden. Tempo statt Gewicht: 3 Sek runter.`,
+      exercises: [
+        HZ("Goblet Squat", "4x10", "Reps", "Kettlebell vor der Brust, 3 Sek runter, unten kurz halten."),
+        HZ("Ausfallschritt rückwärts", "4x8/Bein", "Reps", "Kettlebell vor der Brust, Oberkörper aufrecht."),
+        HZ("Einbeiniges Kreuzheben", "4x8/Bein", "Reps", "Kettlebell in der Hand gegenüber dem Standbein, Rücken neutral, Bewegung aus der Hüfte."),
+        HZ("Kettlebell Swing", "4x15", "Reps", "Hüfte schnappt nach vorn, die Arme führen nur."),
+        HZ("Plank Kettlebell", "4x40 Sek", "Sek", "Ohne Gewicht, Rippen unten."),
+      ],
+    };
+  if (dowIdx === 5)
+    return {
+      title: "Zuhause · Oberkörper",
+      type: "gym",
+      heim: true,
+      hint: `${kopf} 4 Runden, 30 Sek Pause. Ohne Klimmzugstange holst du den Zug-Reiz über langsames Rudern.`,
+      exercises: [
+        HZ("Einarmiges Rudern", "4x10/Seite", "Reps", "Eine Hand an Stuhl oder Bank, 3 Sek absenken, oben 1 Sek halten."),
+        HZ("Einarmiges Überkopfdrücken", "4x6/Seite", "Reps", "Rippen unten, kein Hohlkreuz. Gesäß und Bauch fest."),
+        HZ("Liegestütze", "4x AMRAP", "Reps", "Zwei Wiederholungen vor dem Versagen aufhören."),
+        HZ("Y-T-W am Boden", "4x8", "Reps", "Bäuchlings, ohne Gewicht, Daumen nach oben."),
+      ],
+    };
+  if (dowIdx === 0)
+    return {
+      title: "Zuhause · Motor",
+      type: "gym",
+      heim: true,
+      hint: `${kopf} 18 Min, jede Minute neu: Minute 1 Swings, Minute 2 Goblet Squats, Minute 3 Step-ups. Sechs Durchgänge.`,
+      exercises: [
+        HZ("Swing (Minute 1)", "6x15", "Reps"),
+        HZ("Goblet Squat (Minute 2)", "6x8", "Reps"),
+        HZ("Step-up Stuhl (Minute 3)", "6x8/Bein", "Reps", "Stabiler Stuhl oder unterste Treppenstufe, Kettlebell vor der Brust."),
+      ],
+    };
+  return null;
+}
+
+/** Die Einheit, die für diesen Tag tatsächlich gilt: Gym-Plan oder — wenn so markiert — die Zuhause-Variante. */
+export function sessionFuer(dateStr, dowIdx, log) {
+  if (log && log.modus === "heim" && !inReise(dateStr)) {
+    const h = getHeimSession(dowIdx);
+    if (h) return h;
+  }
+  return getSession(dateStr, dowIdx);
+}
+
 /** Anzahl Sätze aus einem Schema wie "4x5" oder "3x12-15". Maximal 8. */
 export const setCount = (scheme) => {
   const m = /^(\d+)\s*x/i.exec(scheme || "");
@@ -289,6 +353,7 @@ export const EX_INDEX = (() => {
   for (const bt of ["A", "B"])
     for (const dw of [0, 1, 5]) for (const x of getSession(PLAN_SAMPLE[bt], dw).exercises) m[x.id] = { name: x.name, unit: x.unit };
   for (const x of getSession(REISE.start, 1).exercises) m[x.id] = { name: x.name, unit: x.unit };
+  for (const dw of [0, 1, 5]) for (const x of getHeimSession(dw).exercises) m[x.id] = { name: x.name, unit: x.unit };
   const legacy = [
     ["Plank", "✓"],
     ["Steigungslaufband", "min"],

@@ -274,3 +274,31 @@ test("hatSpanne erkennt Wiederholungsspannen im Schema", () => {
   for (const s of ["3x6-8", "4x4-6", "3x12-15", "3x8-10"]) assert.equal(hatSpanne(s), true, s);
   for (const s of ["4x5", "3x15", "4x AMRAP", "45-60 Min", "3x12/Bein", "2 Min/Seite"]) assert.equal(hatSpanne(s), false, s);
 });
+
+import { getHeimSession, sessionFuer } from "../src/lib/plan.js";
+import { einheitErfuellt } from "../src/lib/metrics.js";
+describe("Zuhause-Variante mit Kettlebell", () => {
+  test("gibt es für Mo, Fr, So — und sonst nicht", () => {
+    for (const d of [0, 1, 5]) assert.ok(getHeimSession(d), `dow ${d}`);
+    for (const d of [2, 3, 4, 6]) assert.equal(getHeimSession(d), null, `dow ${d}`);
+  });
+  test("eigene IDs, keine Zusatzlast-, Lauf- oder Bergsteiger-Begriffe", () => {
+    for (const d of [0, 1, 5]) {
+      const h = getHeimSession(d);
+      const text = JSON.stringify(h).toLowerCase();
+      for (const x of h.exercises) assert.match(x.id, /^kb-/);
+      assert.doesNotMatch(text, /laufen\b|joggen|rucksack|weste|fingerboard|wallis|4000/);
+    }
+  });
+  test("sessionFuer: nur mit modus heim, nie in der Reise", () => {
+    const mo = "2026-10-12";
+    assert.equal(sessionFuer(mo, 1, {}).heim, undefined);
+    assert.equal(sessionFuer(mo, 1, { modus: "heim" }).heim, true);
+    assert.equal(sessionFuer(mo, 2, { modus: "heim" }).heim, undefined); // Dienstag: Rad
+    assert.equal(sessionFuer("2026-12-21", 1, { modus: "heim" }).heim, undefined); // Reise
+  });
+  test("ein Satz in der Heim-Einheit zählt als erfüllt", () => {
+    const logs = { "2026-10-12": { modus: "heim", entries: { "kb-goblet-squat": { sets: ["10"] } } } };
+    assert.equal(einheitErfuellt(logs, "2026-10-12"), true);
+  });
+});

@@ -3,7 +3,7 @@
 // inklusive Kontext, Kennzahlen und offener Fragen.
 
 import { plusTage, weekBounds, tage, kurz, fmtNum, fmtKg, dow } from "./dates.js";
-import { PLAN_START, ZIEL_DATUM, ZIEL_TITEL, blockInfo, getSession, inReise, EX_INDEX, GEWICHT } from "./plan.js";
+import { PLAN_START, ZIEL_DATUM, ZIEL_TITEL, blockInfo, getSession, sessionFuer, inReise, EX_INDEX, GEWICHT } from "./plan.js";
 import { konstanz, wochenQuote, gewichtStatus, efVerlauf, wochenVolumen, streak, kreatinStreak } from "./metrics.js";
 
 const listeAus = (map) =>
@@ -94,7 +94,7 @@ export function exportText(data, todayStr) {
       const datum = plusTage(mon, i);
       const l = logs[datum];
       if (!l) continue;
-      const s = getSession(datum, dow(datum));
+      const s = sessionFuer(datum, dow(datum), l);
       const teile = [];
       for (const [exId, e] of Object.entries(l.entries || {})) {
         const meta = EX_INDEX[exId] || { name: exId, unit: "" };

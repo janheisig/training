@@ -118,6 +118,7 @@ export default function App() {
           cardio: { ...(alt.cardio || {}) },
           note: alt.note || "",
           befinden: alt.befinden || null,
+          modus: alt.modus || null,
         });
         neu._t = Date.now();
         const naechste = { ...vorher, logs: { ...vorher.logs, [datum]: neu } };

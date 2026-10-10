@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { weekBounds, plusTage, kurz, dow, DAYS_KURZ } from "../lib/dates.js";
-import { getSession, blockInfo, inReise, EX_INDEX } from "../lib/plan.js";
+import { getSession, sessionFuer, blockInfo, inReise, EX_INDEX } from "../lib/plan.js";
 import { einheitErfuellt, wochenQuote, wochenVolumen } from "../lib/metrics.js";
 import { Karte } from "./ui.jsx";
 
@@ -84,7 +84,7 @@ export default function Woche({ data, schreibe, dateStr, setDateStr, todayStr })
       <Karte>
         {Array.from({ length: 7 }).map((_, i) => {
           const datum = plusTage(mon, i);
-          const s = getSession(datum, dow(datum));
+          const s = sessionFuer(datum, dow(datum), data.logs[datum]);
           const erfuellt = einheitErfuellt(data.logs, datum);
           const zus = zusammenfassung(datum);
           const zukunft = datum > todayStr;

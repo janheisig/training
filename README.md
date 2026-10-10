@@ -12,6 +12,7 @@ funktioniert dort auch ohne Empfang.
 ## Was es kann
 
 - **Tagesplan** mit letzter Leistung und begründetem Gewichtsvorschlag pro Übung
+- **Zuhause-Variante** mit einem 16-kg-Kettlebell für Montag, Freitag und Sonntag (15–20 Minuten), umschaltbar pro Tag
 - **Offline** nutzbar — im Gym wird lokal gespeichert, der Abgleich läuft, sobald wieder Netz da ist
 - **Sync zwischen Geräten**: Handy und Laptop sehen denselben Stand, ohne sich zu überschreiben
 - **Strava** direkt angebunden — beim Öffnen wird die laufende Woche automatisch nachgezogen

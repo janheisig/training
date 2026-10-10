@@ -116,6 +116,10 @@ export default function PlanTab({ data, todayStr, setDateStr }) {
           Donnerstag ist blockiert: Arbeit bis 17:30, Klettern um 18:00. Kein Laufen. Zusatzlast auf dem Laufband gibt es
           nicht — im Studio nur Sandsäcke auf der Schulter, Rucksack nur draußen.
         </div>
+        <div className="klein-text dim mt">
+          Schaffst du es montags, freitags oder sonntags nicht ins Gym: Unter „Heute" gibt es oben die Umschaltung auf
+          „Zuhause · Kettlebell" — 15–20 Minuten, zählt für die Konstanz.
+        </div>
       </Karte>
 
       <Karte>
