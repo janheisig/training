@@ -208,7 +208,7 @@ export function getSession(dateStr, dowIdx) {
   ex.A[1] = [
     S("Kniebeuge", "4x5", "kg", 5, 60, "RPE 8, zwei Wiederholungen im Tank lassen. +5 kg, wenn alle vier Sätze sauber waren."),
     S("Rumän. Kreuzheben", "3x6", "kg", 5, 50, "RPE 7–8. Rücken neutral, Bewegung aus der Hüfte."),
-    S("Bulgarian Split Squat", "3x8/Bein", "kg/KH", 2, 14, "Langsam absetzen — die exzentrische Phase ist der eigentliche Reiz. Einbeinig deckt außerdem Seitenunterschiede auf."),
+    S("Rückwärts-Ausfallschritt", "3x8/Bein", "kg/KH", 2, 12, "Kurzhanteln links und rechts, 3 Sek runter, Schienbein vorn unten etwa senkrecht. Gewicht = eine Hantel (kg pro Hand). Einbeinig deckt außerdem Seitenunterschiede auf."),
     S("Wadenheben", "4x12", "kg", 4, 28, "Volle Absenkung an der Stufe."),
     S("Pallof Press", "3x12/Seite", "✓", 0, null, "Anti-Rotation am Kabel oder Band. Hält den Rücken beim Tragen und beim Klettern stabil."),
     S("Hanging Leg Raises", "3x8-10", "✓", 0),
@@ -363,6 +363,7 @@ export const EX_INDEX = (() => {
     ["Hanging Leg Raises", "✓"],
     ["Step-up Box", "kg/KH"],
     ["Schulterdrücken", "kg/KH"],
+    ["Bulgarian Split Squat", "kg/KH"],
   ];
   for (const [name, unit] of legacy) {
     const id = slug(name);
